@@ -9,7 +9,9 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f9f9f9;
+            background-image: url('background.png'); /* Thêm background hình ảnh */
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -127,6 +129,16 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+        /* Vị trí và kiểu chữ cho "Nothing here" */
+        .easter-egg {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -156,7 +168,12 @@
         <button class="debug-button" onclick="clearMessages()">Xóa Tin Nhắn</button>
     </div>
 
+    <!-- Easter Egg - "Nothing here" -->
+    <div id="easterEgg" class="easter-egg">Nothing here</div>
+
     <script>
+        let easterEggClicks = 0;  // Đếm số lần nhấp vào "Nothing here"
+
         // Kiểm tra đăng nhập
         function login() {
             const password = document.getElementById('password').value;
@@ -165,7 +182,6 @@
             if (password === correctPassword) {
                 document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('journalContainer').style.display = 'flex';
-                document.getElementById('debugContainer').style.display = 'block'; // Hiện debug mode
                 loadPosts();  // Tải các bài viết từ localStorage
             } else {
                 document.getElementById('errorMessage').innerText = "Mật khẩu không đúng!";
@@ -219,6 +235,21 @@
             localStorage.removeItem('posts');
             loadPosts();  // Cập nhật lại giao diện
         }
+
+        // Easter Egg: Nhấp vào "Nothing here" để mở debug mode
+        document.getElementById('easterEgg').addEventListener('click', function() {
+            easterEggClicks++;
+            if (easterEggClicks === 25) {
+                alert("Đã mở khóa Debug Mode. Nhấn SHIFT + D để mở menu Debug.");
+            }
+        });
+
+        // Khi người dùng nhấn SHIFT + D, mở menu Debug
+        document.addEventListener('keydown', function(event) {
+            if (event.shiftKey && event.key === 'D' && easterEggClicks === 25) {
+                document.getElementById('debugContainer').style.display = 'block';
+            }
+        });
 
         // Khi trang được tải, kiểm tra đăng nhập và tải các bài viết
         window.onload = function() {
