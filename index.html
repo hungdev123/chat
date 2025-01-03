@@ -23,18 +23,6 @@
             text-align: center;
         }
 
-        /* Cài đặt background là ảnh PNG */
-        .background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('background.png') no-repeat center center;
-            background-size: cover;
-            z-index: -1;
-        }
-
         .login-container {
             display: flex;
             flex-direction: column;
@@ -108,7 +96,7 @@
             word-wrap: break-word;
         }
 
-        /* Style cho iframe */
+        /* Phần hiển thị iframe */
         .embed-container {
             margin-top: 20px;
             padding: 20px;
@@ -124,12 +112,42 @@
             height: 281px;
             border: none;
         }
+
+        /* Debug mode */
+        .debug-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Ẩn debug mode khi không cần thiết */
+        }
+
+        .debug-button {
+            background-color: #f44336;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .debug-button:hover {
+            background-color: #e53935;
+        }
+
+        .debug-input {
+            width: 60%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
-
-    <!-- Background PNG -->
-    <div class="background-image"></div>
 
     <!-- Đăng nhập -->
     <div id="loginContainer" class="login-container">
@@ -149,10 +167,18 @@
         <h2>Bài viết đã công khai:</h2>
         <div id="journalPosts"></div>
 
-        <!-- Pinterest Embed -->
+        <!-- Phần iframe (ví dụ) -->
         <div class="embed-container">
             <iframe src="https://assets.pinterest.com/ext/embed.html?id=626070785675768808" height="281" width="345" frameborder="0" scrolling="no"></iframe>
         </div>
+    </div>
+
+    <!-- Debug Mode -->
+    <div id="debugContainer" class="debug-container">
+        <h3>Debug Mode</h3>
+        <button class="debug-button" onclick="clearMessages()">Xóa Tin Nhắn</button>
+        <input id="banIP" class="debug-input" type="text" placeholder="Nhập IP để cấm (tạm thời)">
+        <button class="debug-button" onclick="banIP()">Cấm IP</button>
     </div>
 
     <script>
@@ -164,6 +190,7 @@
             if (password === correctPassword) {
                 document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('journalContainer').style.display = 'flex';
+                document.getElementById('debugContainer').style.display = 'block'; // Hiện debug mode
                 loadPosts();  // Tải các bài viết từ localStorage
             } else {
                 document.getElementById('errorMessage').innerText = "Mật khẩu không đúng!";
@@ -210,6 +237,23 @@
                 postElement.innerText = post.content;
                 journalPosts.appendChild(postElement);
             });
+        }
+
+        // Hàm xóa tất cả tin nhắn
+        function clearMessages() {
+            localStorage.removeItem('posts');
+            loadPosts();  // Cập nhật lại giao diện
+        }
+
+        // Hàm cấm IP (chỉ là giả lập trong môi trường này)
+        function banIP() {
+            const ip = document.getElementById('banIP').value;
+            if (ip) {
+                alert("IP " + ip + " đã bị cấm!");
+                // Thực tế cần một cách cấm IP ở server
+            } else {
+                alert("Vui lòng nhập địa chỉ IP để cấm.");
+            }
         }
 
         // Khi trang được tải, kiểm tra đăng nhập và tải các bài viết
