@@ -154,11 +154,6 @@
     <div id="debugContainer" class="debug-container">
         <h3>Debug Mode</h3>
         <button class="debug-button" onclick="clearMessages()">Xóa Tin Nhắn</button>
-        <input id="banIP" class="debug-input" type="text" placeholder="Nhập IP để cấm (tạm thời)">
-        <button class="debug-button" onclick="banIP()">Cấm IP</button>
-        <br><br>
-        <input id="unbanIP" class="debug-input" type="text" placeholder="Nhập IP để hủy cấm">
-        <button class="debug-button" onclick="unbanIP()">Hủy Cấm IP</button>
     </div>
 
     <script>
@@ -223,37 +218,6 @@
         function clearMessages() {
             localStorage.removeItem('posts');
             loadPosts();  // Cập nhật lại giao diện
-        }
-
-        // Hàm cấm IP (chỉ là giả lập trong môi trường này)
-        function banIP() {
-            const ip = document.getElementById('banIP').value;
-            if (ip) {
-                let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
-                bannedIPs.push(ip);
-                localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
-                alert("IP " + ip + " đã bị cấm!");
-            } else {
-                alert("Vui lòng nhập địa chỉ IP để cấm.");
-            }
-        }
-
-        // Hàm hủy cấm IP
-        function unbanIP() {
-            const ip = document.getElementById('unbanIP').value;
-            if (ip) {
-                let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
-                const index = bannedIPs.indexOf(ip);
-                if (index > -1) {
-                    bannedIPs.splice(index, 1);
-                    localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
-                    alert("IP " + ip + " đã được hủy cấm.");
-                } else {
-                    alert("IP này không có trong danh sách cấm.");
-                }
-            } else {
-                alert("Vui lòng nhập địa chỉ IP để hủy cấm.");
-            }
         }
 
         // Khi trang được tải, kiểm tra đăng nhập và tải các bài viết
