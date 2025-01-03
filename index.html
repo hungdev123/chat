@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Micropro chat</title>
+    <title>Nhật Ký Công Khai</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -199,7 +199,7 @@
         // Kiểm tra đăng nhập
         function login() {
             const password = document.getElementById('password').value;
-            const correctPassword = "protech"; // Mật khẩu đúng
+            const correctPassword = "12345"; // Mật khẩu đúng
 
             if (password === correctPassword) {
                 document.getElementById('loginContainer').style.display = 'none';
@@ -275,21 +275,19 @@
             }
         });
 
-        // Hàm kiểm tra bản cập nhật
+        // Kiểm tra bản cập nhật khi trang tải lần đầu
         function checkForUpdates() {
-            const cacheBuster = new Date().getTime();  // Lấy thời gian hiện tại làm tham số để ngừng việc sử dụng cache
-            const currentUrl = window.location.href;
+            const lastChecked = localStorage.getItem('lastChecked');
+            const currentTimestamp = new Date().getTime();
 
-            // Tạo URL mới với tham số cache buster để yêu cầu tải lại trang
-            const newUrl = currentUrl + "?v=" + cacheBuster;
-
-            // Kiểm tra nếu URL thay đổi (có bản cập nhật mới)
-            if (newUrl !== currentUrl) {
-                window.location.replace(newUrl); // Tải lại trang web với URL mới để tránh cache
+            // Chỉ kiểm tra bản cập nhật nếu không có dữ liệu 'lastChecked'
+            if (!lastChecked || currentTimestamp - lastChecked > 60000) {  // Kiểm tra mỗi phút
+                localStorage.setItem('lastChecked', currentTimestamp);
+                window.location.reload(); // Tải lại trang nếu đã quá 1 phút từ lần kiểm tra trước
             }
         }
 
-        // Kiểm tra bản cập nhật mỗi khi người dùng truy cập trang
+        // Kiểm tra bản cập nhật khi trang lần đầu được tải
         window.onload = checkForUpdates;
 
     </script>
