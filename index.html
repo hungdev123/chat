@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nhật Ký Công Khai</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Micropro chat</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -272,10 +275,23 @@
             }
         });
 
-        // Khi trang được tải, kiểm tra đăng nhập và tải các bài viết
-        window.onload = function() {
-            loadPosts();
-        };
+        // Hàm kiểm tra bản cập nhật
+        function checkForUpdates() {
+            const cacheBuster = new Date().getTime();  // Lấy thời gian hiện tại làm tham số để ngừng việc sử dụng cache
+            const currentUrl = window.location.href;
+
+            // Tạo URL mới với tham số cache buster để yêu cầu tải lại trang
+            const newUrl = currentUrl + "?v=" + cacheBuster;
+
+            // Kiểm tra nếu URL thay đổi (có bản cập nhật mới)
+            if (newUrl !== currentUrl) {
+                window.location.replace(newUrl); // Tải lại trang web với URL mới để tránh cache
+            }
+        }
+
+        // Kiểm tra bản cập nhật mỗi khi người dùng truy cập trang
+        window.onload = checkForUpdates;
+
     </script>
 
 </body>
