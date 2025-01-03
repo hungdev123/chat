@@ -173,6 +173,7 @@
 
     <script>
         let easterEggClicks = 0;  // Đếm số lần nhấp vào "Nothing here"
+        let debugModeOpen = false; // Trạng thái Debug Mode
 
         // Kiểm tra đăng nhập
         function login() {
@@ -240,14 +241,16 @@
         document.getElementById('easterEgg').addEventListener('click', function() {
             easterEggClicks++;
             if (easterEggClicks === 25) {
-                alert("Đã mở khóa Debug Mode. Nhấn SHIFT + D để mở menu Debug.");
+                // Đã mở khóa Debug Mode, nhưng không hiển thị thông báo
+                // Cung cấp chức năng mở debug mode qua SHIFT + D
             }
         });
 
-        // Khi người dùng nhấn SHIFT + D, mở menu Debug
+        // Khi người dùng nhấn SHIFT + D, mở/đóng menu Debug
         document.addEventListener('keydown', function(event) {
             if (event.shiftKey && event.key === 'D' && easterEggClicks === 25) {
-                document.getElementById('debugContainer').style.display = 'block';
+                debugModeOpen = !debugModeOpen;
+                document.getElementById('debugContainer').style.display = debugModeOpen ? 'block' : 'none';
             }
         });
 
