@@ -96,24 +96,6 @@
             word-wrap: break-word;
         }
 
-        /* Phần hiển thị iframe */
-        .embed-container {
-            margin-top: 20px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 80%;
-            max-width: 360px;
-        }
-
-        iframe {
-            width: 100%;
-            height: 281px;
-            border: none;
-        }
-
-        /* Debug mode */
         .debug-container {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
@@ -122,7 +104,7 @@
             max-width: 600px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: none; /* Ẩn debug mode khi không cần thiết */
+            display: none;
         }
 
         .debug-button {
@@ -166,11 +148,6 @@
 
         <h2>Bài viết đã công khai:</h2>
         <div id="journalPosts"></div>
-
-        <!-- Phần iframe (ví dụ) -->
-        <div class="embed-container">
-            <iframe src="https://assets.pinterest.com/ext/embed.html?id=626070785675768808" height="281" width="345" frameborder="0" scrolling="no"></iframe>
-        </div>
     </div>
 
     <!-- Debug Mode -->
@@ -179,6 +156,9 @@
         <button class="debug-button" onclick="clearMessages()">Xóa Tin Nhắn</button>
         <input id="banIP" class="debug-input" type="text" placeholder="Nhập IP để cấm (tạm thời)">
         <button class="debug-button" onclick="banIP()">Cấm IP</button>
+        <br><br>
+        <input id="unbanIP" class="debug-input" type="text" placeholder="Nhập IP để hủy cấm">
+        <button class="debug-button" onclick="unbanIP()">Hủy Cấm IP</button>
     </div>
 
     <script>
@@ -249,10 +229,30 @@
         function banIP() {
             const ip = document.getElementById('banIP').value;
             if (ip) {
+                let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
+                bannedIPs.push(ip);
+                localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
                 alert("IP " + ip + " đã bị cấm!");
-                // Thực tế cần một cách cấm IP ở server
             } else {
                 alert("Vui lòng nhập địa chỉ IP để cấm.");
+            }
+        }
+
+        // Hàm hủy cấm IP
+        function unbanIP() {
+            const ip = document.getElementById('unbanIP').value;
+            if (ip) {
+                let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
+                const index = bannedIPs.indexOf(ip);
+                if (index > -1) {
+                    bannedIPs.splice(index, 1);
+                    localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
+                    alert("IP " + ip + " đã được hủy cấm.");
+                } else {
+                    alert("IP này không có trong danh sách cấm.");
+                }
+            } else {
+                alert("Vui lòng nhập địa chỉ IP để hủy cấm.");
             }
         }
 
